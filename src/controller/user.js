@@ -37,7 +37,6 @@ exports.signup=(req,res)=>{
             lastName,
             email,
             password,
-            userName,
         } = req.body;
         const _user= new User({
             firstName,
