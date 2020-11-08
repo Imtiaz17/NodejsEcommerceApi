@@ -4,12 +4,17 @@ const env= require('dotenv');
 const app= express();
 const bodyParser = require('body-parser');
 env.config();
-app.use(bodyParser());
 
+//routes
+const UserRoutes= require('./routes/user');
+
+app.use(bodyParser());
+app.use('/api',UserRoutes);
 mongoose.connect(`mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@cluster0.g8y0o.mongodb.net/${process.env.MONGO_DB_DATABASE}?retryWrites=true&w=majority`, 
 {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex:true
 }).then(()=>{
     console.log('Database connected successfully');
 });
