@@ -7,9 +7,11 @@ env.config();
 
 //routes
 const UserRoutes= require('./routes/user');
+const CategoryRoutes= require('./routes/category');
 
 app.use(bodyParser());
 app.use('/api',UserRoutes);
+app.use('/api',CategoryRoutes);
 mongoose.connect(`mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@cluster0.g8y0o.mongodb.net/${process.env.MONGO_DB_DATABASE}?retryWrites=true&w=majority`, 
 {
     useNewUrlParser: true,
