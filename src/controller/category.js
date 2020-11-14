@@ -28,6 +28,9 @@ exports.categoryCreate=(req,res)=>{
     if(req.body.parentId){
         obj.parentId=req.body.parentId
     }
+    if(req.file){
+        obj.image=process.env.API_URL+'public/'+ req.file.filename;
+    }
     const cat= new Category(obj);
     cat.save((error,category)=>{
         if(error){
