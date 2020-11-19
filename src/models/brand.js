@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const categorySchema = new mongoose.Schema({
+const brandSchema = new mongoose.Schema({
     name:{
         type:String,
         required:true,
@@ -10,11 +10,8 @@ const categorySchema = new mongoose.Schema({
         required:true,
         unique:true,
     },
-    parentId:{
-        type:String
-    },
-    brands:[{type:mongoose.Schema.Types.ObjectId,ref:'Brand',required:true}],
+    category:[{type:mongoose.Schema.Types.ObjectId,ref:'Category',required:true}],
     image:{type:String}
 },{timestamps:true});
 
-module.exports = mongoose.model('Category',categorySchema);
+module.exports = mongoose.model('Brand',brandSchema);

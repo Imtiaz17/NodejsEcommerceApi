@@ -11,12 +11,14 @@ const UserRoutes= require('./routes/user');
 const CategoryRoutes= require('./routes/category');
 const ProductRoutes= require('./routes/product');
 const CartRoutes= require('./routes/cart');
+const BrandRoutes= require('./routes/brand');
 
 app.use(bodyParser());
 app.use('/api',UserRoutes);
 app.use('/api',CategoryRoutes);
 app.use('/api',ProductRoutes);
 app.use('/api',CartRoutes);
+app.use('/api',BrandRoutes);
 
 
 //static file url
