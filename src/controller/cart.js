@@ -14,16 +14,20 @@ exports.addItemToCart = (req, res) => {
           $set: {
             "cartItems.$": {
               ...req.body.cartItems,
-              quantity: item.quantity + req.body.cartItems.quantity,
+              quantity: item.quantity + req.body.cartItems.quantity
             },
+            "total_price":cart.total_price+(req.body.cartItems.price * req.body.cartItems.quantity)
           },
         };
       } else {
         condition = { user: req.user._id };
         update = {
           $push: {
-            cartItems: req.body.cartItems,
+            cartItems: req.body.cartItems
           },
+          $set: {
+            total_price:cart.total_price+(req.body.cartItems.quantity * req.body.cartItems.price)
+          }
         };
       }
       Cart.findOneAndUpdate(condition, update, { new: true }).exec(
@@ -39,6 +43,7 @@ exports.addItemToCart = (req, res) => {
       const cart = new Cart({
         user: req.user._id,
         cartItems: req.body.cartItems,
+        total_price: req.body.cartItems.price * req.body.cartItems.quantity
       });
       cart.save((error, cart) => {
         if (error) return res.status(400).json({ error });

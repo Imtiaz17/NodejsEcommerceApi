@@ -2,7 +2,7 @@ const Product = require("../models/product");
 const slugify = require("slugify");
 
 exports.addProduct = (req, res) => {
-  const { name, price, quantity, description, category } = req.body;
+  const { name, price, quantity, description, category,sell_price,sku,tags } = req.body;
   let productPic = [];
   if (req.files.length > 0) {
     productPic = req.files.map((file) => {
@@ -16,6 +16,9 @@ exports.addProduct = (req, res) => {
     quantity,
     description,
     category,
+    sell_price,
+    sku,
+    tags,
     productPic,
   });
   product.save((error, product) => {
@@ -25,3 +28,4 @@ exports.addProduct = (req, res) => {
     }
   });
 };
+
