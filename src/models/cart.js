@@ -9,7 +9,7 @@ const cartSchema = new mongoose.Schema({
         }
     ],
     total_price:{ type: Number },
-    discounts:{ type:mongoose.Schema.Types.ObjectId, ref: 'Cupon' }
+    discounts:{ type: Number }
 },{timestamps:true});
 
 module.exports = mongoose.model('Cart',cartSchema);
