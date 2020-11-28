@@ -24,11 +24,12 @@ exports.signin = (req, res) => {
         });
       } else {
         res.status(400).json({
-          message: "Invalid password",
+          status:"fail",
+          message: "Incorrect password",
         });
       }
     } else {
-      return res.status(400).json({ message: "Something went wrong" });
+      return res.status(400).json({status:"fail",message: "Incorrect Email" });
     }
   });
 };
@@ -39,13 +40,14 @@ exports.signup = (req, res) => {
       return res.status(400).json({
         message: "User already registered",
       });
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, role } = req.body;
     const _user = new User({
       firstName,
       lastName,
       email,
       password,
-      userName: Math.random().toString(),
+      role,
+      userName: firstName+"_"+Math.random().toString(36).substr(2, 5)
     });
     _user.save((error, data) => {
       if (error) {

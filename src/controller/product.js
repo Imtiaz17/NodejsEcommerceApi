@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const Review = require("../models/reviews");
 const slugify = require("slugify");
 
 exports.addProduct = (req, res) => {
@@ -29,3 +30,32 @@ exports.addProduct = (req, res) => {
   });
 };
 
+exports.showProduct=async (req,res)=>{
+  const product = await Product.findById(req.params.id).populate('reviews');
+  if(!product){
+    return res.status(400).json({ status:false, message:"No prouct found" });
+  }
+  res.status(200).json({ product });
+};
+exports.addReview = async(req, res) => {
+  const review =  new Review({
+      user: req.user._id,
+      review: req.body.review,
+      rating: req.body.rating,
+      product: req.body.product
+    });
+    review.save((error, newreview) => {
+      if (error) return res.status(400).json({ error });
+      if (newreview) {
+        return res.status(201).json({ newreview });
+      }
+    });
+};
+
+exports.allProducts=async (req,res)=>{
+  const product = await Product.find();
+  if(!product){
+    return res.status(400).json({ status:false, message:"No prouct found" });
+  }
+  res.status(200).json({ product });
+}

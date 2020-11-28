@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {requireSignin} = require ('../middleware/auth')
+const {requireSignin,onlyaccess} = require ('../middleware/auth')
 const {addBrand,getBrands}= require ('../controller/brand')
 const multer = require('multer');
 const shortid = require('shortid');
@@ -16,6 +16,6 @@ var storage = multer.diskStorage({
   })
    
 const  upload = multer({ storage });
-router.post('/brand/add',upload.single('image'),addBrand);
+router.post('/brand/add',upload.single('image'),requireSignin,onlyaccess('admin'),addBrand);
 router.get('/brands',getBrands);
 module.exports=router

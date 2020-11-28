@@ -32,20 +32,21 @@ const productSchema = new mongoose.Schema(
       trim: true,
     },
     productPic: [{ img: { type: String } }],
-    reviews: [
-      {
-        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        rating: Number,
-        review: String,
-      },
-    ],
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,
     },
   },
+  {
+    toJSON:{virtuals:true},
+    toObject:{virtuals:true},
+  },
   { timestamps: true }
 );
-
+productSchema.virtual('reviews',{
+  ref:'Reviews',
+  foreignField:'product',
+  localField:'_id'
+})
 module.exports = mongoose.model("Product", productSchema);
