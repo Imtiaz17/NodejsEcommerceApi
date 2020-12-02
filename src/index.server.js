@@ -15,6 +15,7 @@ const BrandRoutes= require('./routes/brand');
 const CuponRoutes= require('./routes/cupon');
 const ReviewsRoutes= require('./routes/reviews');
 const AddressRoutes= require('./routes/address');
+const OrderRoutes= require('./routes/order');
 
 app.use(bodyParser());
 app.use('/api',UserRoutes);
@@ -25,6 +26,7 @@ app.use('/api',BrandRoutes);
 app.use('/api',CuponRoutes);
 app.use('/api',ReviewsRoutes);
 app.use('/api',AddressRoutes);
+app.use('/api',OrderRoutes);
 
 
 //static file url
