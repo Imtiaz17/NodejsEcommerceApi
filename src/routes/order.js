@@ -5,7 +5,7 @@ const {addOrder,getOrders,updateOrderStatus}= require ('../controller/order')
 
 
 router.post("/addOrder", requireSignin, addOrder);
-router.get("/getOrders", requireSignin, getOrders);
-router.post("/update_order_status", requireSignin, updateOrderStatus);
+router.get("/getOrders", requireSignin,onlyaccess('admin'),getOrders);
+router.post("/update_order_status", requireSignin,onlyaccess('admin'),updateOrderStatus);
 
 module.exports = router;

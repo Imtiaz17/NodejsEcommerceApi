@@ -16,6 +16,6 @@ var storage = multer.diskStorage({
   })
    
 const  upload = multer({ storage });
-router.post('/brand/add',upload.single('image'),requireSignin,onlyaccess('admin'),addBrand);
+router.post('/brand/add',upload.single('image'),requireSignin,addBrand);
 router.get('/brands',getBrands);
 module.exports=router

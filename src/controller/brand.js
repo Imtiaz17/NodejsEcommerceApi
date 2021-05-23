@@ -31,8 +31,8 @@ module.exports = {
   },
 
   async getBrands(req, res) {
-    await Brand.find({})
-      .populate("category", "name")
+    await Brand.find()
+      .populate("category", "name").sort({createdAt:-1})
       .exec((error, brands) => {
         if (error) return res.status(400).json({ error });
         if (brands) {

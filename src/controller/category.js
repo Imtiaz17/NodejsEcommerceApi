@@ -3,19 +3,13 @@ const slugify = require("slugify");
 
 function listOfcategory(categories, parentId = null) {
   const catList = [];
-  let category;
-  if (parentId == null) {
-    category = categories.filter((cat) => cat.parentId == undefined);
-  } else {
-    category = categories.filter((cat) => cat.parentId == parentId);
-  }
-  for (let cat of category) {
+  for (let cat of categories) {
     catList.push({
       _id: cat._id,
       name: cat.name,
       slug: cat.slug,
-      children: listOfcategory(categories, cat._id),
-      brands: cat.brands,
+      parent: cat.parentId?categories.filter((category) => category._id == cat.parentId):null
+      // brands: cat.brands,
     });
   }
   return catList;

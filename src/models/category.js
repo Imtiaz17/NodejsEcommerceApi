@@ -13,7 +13,7 @@ const categorySchema = new mongoose.Schema({
     parentId:{
         type:String
     },
-    brands:[{type:mongoose.Schema.Types.ObjectId,ref:'Brand',required:true}],
+    //brands:[{type:mongoose.Schema.Types.ObjectId,ref:'Brand',required:true}],
     image:{type:String}
 },{timestamps:true});
 
