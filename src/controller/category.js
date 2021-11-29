@@ -8,7 +8,9 @@ function listOfcategory(categories, parentId = null) {
       _id: cat._id,
       name: cat.name,
       slug: cat.slug,
-      parent: cat.parentId?categories.filter((category) => category._id == cat.parentId):null
+      parent: cat.parentId
+        ? categories.find((category) => category._id == cat.parentId)
+        : null,
       // brands: cat.brands,
     });
   }
@@ -36,6 +38,18 @@ exports.categoryCreate = (req, res) => {
     }
   });
 };
+
+exports,
+  (updateCategory = (req, res) => {
+    const id = req.params.id;
+    Category.findByIdAndUpdate(id, req.body).then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot update Tutorial with id=${id}. Maybe Category was not found!`,
+        });
+      } else res.send({ message: "Category was updated successfully." });
+    });
+  });
 
 exports.getCategories = (req, res) => {
   Category.find({})
