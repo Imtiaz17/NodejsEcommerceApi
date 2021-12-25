@@ -6,14 +6,14 @@ exports.signin = (req, res) => {
     if (error) return res.status(400).json({ error });
     if (user) {
       if (user.authenticate(req.body.password)) {
-        const token = jwt.sign(
+        const accessToken = jwt.sign(
           { _id: user._id, role: user.role },
           process.env.JWT_SECRET,
           { expiresIn: "1d" }
         );
         const { firstName, lastName, email, role, _id } = user;
         res.status(200).json({
-          token,
+          accessToken,
           user: {
             _id,
             firstName,
@@ -24,14 +24,36 @@ exports.signin = (req, res) => {
         });
       } else {
         res.status(400).json({
-          status:"fail",
+          status: "fail",
           message: "Incorrect password",
         });
       }
     } else {
-      return res.status(400).json({status:"fail",message: "Incorrect Email" });
+      return res.status(400).json({ status: "fail", message: "Incorrect Email" });
     }
   });
+};
+
+exports.authUser = (req, res) => {
+  let token = req.headers.authorization.split(" ")[1]; // Bearer <token>
+  let user = jwt.verify(token, process.env.JWT_SECRET);
+  const { _id } = user;
+
+  User.findById(_id).exec((error, user) => {
+    if (error) return res.status(400).json({ error });
+    if (user) {
+      const { firstName, lastName, email, role, _id } = user;
+      res.status(200).json({
+        user: {
+          _id,
+          firstName,
+          lastName,
+          email,
+          role,
+        }
+      })
+    }
+  })
 };
 
 exports.signup = (req, res) => {
@@ -47,7 +69,7 @@ exports.signup = (req, res) => {
       email,
       password,
       role,
-      userName: firstName+"_"+Math.random().toString(36).substr(2, 5)
+      userName: firstName + "_" + Math.random().toString(36).substr(2, 5)
     });
     _user.save((error, data) => {
       if (error) {

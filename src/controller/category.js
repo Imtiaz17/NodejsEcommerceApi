@@ -8,6 +8,7 @@ function listOfcategory(categories, parentId = null) {
       _id: cat._id,
       name: cat.name,
       slug: cat.slug,
+      featured: cat.featured,
       parent: cat.parentId
         ? categories.find((category) => category._id == cat.parentId)
         : null,
@@ -25,6 +26,10 @@ exports.categoryCreate = (req, res) => {
   if (req.body.parentId) {
     obj.parentId = req.body.parentId;
   }
+  if (req.body.featured=='true') {
+    obj.featured = 1;
+  }
+  
   if (req.file) {
     obj.image = process.env.API_URL + "public/" + req.file.filename;
   }
@@ -62,3 +67,17 @@ exports.getCategories = (req, res) => {
       }
     });
 };
+
+exports.deleteCategoryById = async (req, res) => {
+  const categoryId = req.params.id;
+  if (!categoryId) {
+    return res.status(400).json({ status: false, message: "No Category Id found" });
+  }
+  Category.deleteOne({ _id: categoryId }).exec((error, result) => {
+    if (error) return res.status(400).json({ error });
+    if (result) {
+      res.status(202).json({ result });
+    }
+  });
+};
+

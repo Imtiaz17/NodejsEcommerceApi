@@ -31,22 +31,31 @@ const productSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    featured: {
+      type: Number,
+      default: 0
+    },
     productPic: [{ img: { type: String } }],
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,
     },
+    brand: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Brand",
+      required: true,
+    },
   },
   {
-    toJSON:{virtuals:true},
-    toObject:{virtuals:true},
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
   { timestamps: true }
 );
-productSchema.virtual('reviews',{
-  ref:'Reviews',
-  foreignField:'product',
-  localField:'_id'
+productSchema.virtual('reviews', {
+  ref: 'Reviews',
+  foreignField: 'product',
+  localField: '_id'
 })
 module.exports = mongoose.model("Product", productSchema);

@@ -6,7 +6,7 @@ const app= express();
 const path= require('path');
 const bodyParser = require('body-parser');
 env.config();
-app.use(cors())
+app.use(cors({credentials: true, origin: true}));
 
 //routes
 const UserRoutes= require('./routes/user');
@@ -19,7 +19,9 @@ const ReviewsRoutes= require('./routes/reviews');
 const AddressRoutes= require('./routes/address');
 const OrderRoutes= require('./routes/order');
 
-app.use(bodyParser());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(express.json());
 app.use('/api',UserRoutes);
 app.use('/api',CategoryRoutes);
 app.use('/api',ProductRoutes);

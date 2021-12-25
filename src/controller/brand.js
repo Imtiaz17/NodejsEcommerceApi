@@ -6,7 +6,6 @@ module.exports = {
   async addBrand(req, res, next) {
     try {
       const brandobj = {
-        category: req.body.category,
         name: req.body.name,
         slug: slugify(req.body.name, { lower: true }),
       };
@@ -14,13 +13,13 @@ module.exports = {
         brandobj.image = process.env.API_URL + "public/" + req.file.filename;
       }
       const newbrand = await Brand.create(brandobj);
-      const updateCategory = await Category.findByIdAndUpdate(
-        brandobj.category,
-        {
-          $push: { brands: newbrand._id },
-        },
-        { new: true }
-      );
+      // const updateCategory = await Category.findByIdAndUpdate(
+      //   brandobj.category,
+      //   {
+      //     $push: { brands: newbrand._id },
+      //   },
+      //   { new: true }
+      // );
       return res.status(200).json({ newbrand });
     } catch (err) {
       return res.status(400).json({
@@ -32,7 +31,7 @@ module.exports = {
 
   async getBrands(req, res) {
     await Brand.find()
-      .populate("category", "name").sort({createdAt:-1})
+      .populate("category", "name").sort({ createdAt: -1 })
       .exec((error, brands) => {
         if (error) return res.status(400).json({ error });
         if (brands) {
@@ -40,4 +39,17 @@ module.exports = {
         }
       });
   },
+  async deleteBrandById(req, res) {
+    const brandId = req.params.id;
+    if (!brandId) {
+      return res.status(400).json({ status: false, message: "No prduct Id found" });
+    }
+    await Brand.deleteOne({ _id: brandId }).exec((error, result) => {
+      if (error) return res.status(400).json({ error });
+      if (result) {
+        res.status(202).json({ result });
+      }
+    });
+  }
+
 };

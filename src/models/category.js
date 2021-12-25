@@ -13,6 +13,10 @@ const categorySchema = new mongoose.Schema({
     parentId:{
         type:String
     },
+    featured:{
+        type:Number,
+        default:0
+    },
     //brands:[{type:mongoose.Schema.Types.ObjectId,ref:'Brand',required:true}],
     image:{type:String}
 },{timestamps:true});

@@ -10,6 +10,7 @@ exports.addProduct = (req, res) => {
     description,
     category,
     sell_price,
+    brand,
     sku,
     tags,
   } = req.body;
@@ -26,7 +27,9 @@ exports.addProduct = (req, res) => {
     quantity,
     description,
     category,
+    brand,
     sell_price,
+    featured:req.body.featured=='true'?1:0,
     sku,
     tags,
     productPic,
@@ -62,15 +65,17 @@ exports.addReview = async (req, res) => {
 };
 
 exports.allProducts = async (req, res) => {
-  const product = await Product.find();
-  if (!product) {
-    return res.status(400).json({ status: false, message: "No product found" });
-  }
-  res.status(200).json({ product });
+  await Product.find().populate("category","name").sort({ createdAt: -1 })
+    .exec((error, product) => {
+      if (error) return res.status(400).json({ error });
+      if (product) {
+        return res.status(200).json({ product });
+      }
+    });
 };
 
 exports.deleteProductById = async (req, res) => {
-  const productId = req.body.productId;
+  const productId = req.params.id;
   if (!productId) {
     return res.status(400).json({ status: false, message: "No prduct Id found" });
   }

@@ -10,7 +10,7 @@ const brandSchema = new mongoose.Schema({
         required:true,
         unique:true,
     },
-    category:[{type:mongoose.Schema.Types.ObjectId,ref:'Category',required:true}],
+    // category:[{type:mongoose.Schema.Types.ObjectId,ref:'Category',required:true}],
     image:{type:String}
 },{timestamps:true});
 
