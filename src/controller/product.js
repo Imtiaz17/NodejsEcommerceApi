@@ -43,7 +43,9 @@ exports.addProduct = (req, res) => {
 };
 
 exports.showProduct = async (req, res) => {
-  const product = await Product.findById(req.params.id).populate("reviews");
+  const slug = req.params.slug;
+  console.log(slug)
+  const product = await Product.findOne({slug: slug }).populate("reviews");
   if (!product) {
     return res.status(400).json({ status: false, message: "No product found" });
   }
@@ -66,6 +68,26 @@ exports.addReview = async (req, res) => {
 
 exports.allProducts = async (req, res) => {
   await Product.find().populate("category","name").sort({ createdAt: -1 })
+    .exec((error, product) => {
+      if (error) return res.status(400).json({ error });
+      if (product) {
+        return res.status(200).json({ product });
+      }
+    });
+};
+
+exports.newProducts = async (req, res) => {
+  await Product.find().limit(6).sort({ createdAt: -1 })
+    .exec((error, product) => {
+      if (error) return res.status(400).json({ error });
+      if (product) {
+        return res.status(200).json({ product });
+      }
+    });
+};
+
+exports.featuredProducts = async (req, res) => {
+  await Product.find({ featured: 1 }).populate("category","name").sort({ createdAt: -1 })
     .exec((error, product) => {
       if (error) return res.status(400).json({ error });
       if (product) {

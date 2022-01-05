@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {requireSignin,onlyaccess} = require ('../middleware/auth')
 const {productValidation,isValid} = require ('../middleware/validators/product')
-const {addProduct,addReview,showProduct,allProducts,deleteProductById}= require ('../controller/product')
+const {addProduct,addReview,showProduct,allProducts,newProducts,featuredProducts,deleteProductById}= require ('../controller/product')
 const multer = require('multer');
 const shortid = require('shortid');
 const path = require('path');
@@ -20,8 +20,10 @@ const  upload = multer({ storage });
 
 router.post('/product/add',upload.array('productPic'),productValidation,isValid,
 requireSignin,onlyaccess('user'),addProduct);
-router.get('/product/:id',showProduct);
-router.get('/products/',allProducts);
+router.get('/product/:slug',showProduct);
+router.get('/allproducts/',allProducts);
+router.get('/newproducts/',newProducts);
+router.get('/featuredproducts/',featuredProducts);
 router.post('/review',requireSignin,addReview);
 router.delete('/product/delete/:id',requireSignin,deleteProductById);
 
