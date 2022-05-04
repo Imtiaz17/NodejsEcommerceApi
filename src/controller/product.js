@@ -29,7 +29,7 @@ exports.addProduct = (req, res) => {
     category,
     brand,
     sell_price,
-    featured:req.body.featured=='true'?1:0,
+    featured: req.body.featured == 'true' ? 1 : 0,
     sku,
     tags,
     productPic,
@@ -44,8 +44,7 @@ exports.addProduct = (req, res) => {
 
 exports.showProduct = async (req, res) => {
   const slug = req.params.slug;
-  console.log(slug)
-  const product = await Product.findOne({slug: slug }).populate("reviews");
+  const product = await Product.findOne({ slug: slug }).populate("reviews").populate('category').populate('brand');
   if (!product) {
     return res.status(400).json({ status: false, message: "No product found" });
   }
@@ -67,7 +66,7 @@ exports.addReview = async (req, res) => {
 };
 
 exports.allProducts = async (req, res) => {
-  await Product.find().populate("category","name").sort({ createdAt: -1 })
+  await Product.find().populate("category", "name").sort({ createdAt: -1 })
     .exec((error, product) => {
       if (error) return res.status(400).json({ error });
       if (product) {
@@ -75,6 +74,18 @@ exports.allProducts = async (req, res) => {
       }
     });
 };
+
+exports.relatedProducts = async (req, res) => {
+  const {_id,category}= req.body;
+  await Product.find({_id:{$ne:_id},category:{$in:category}}).populate("category", "name").sort({ createdAt: -1 })
+    .exec((error, product) => {
+      if (error) return res.status(400).json({ error });
+      if (product) {
+        return res.status(200).json({ product });
+      }
+    });
+};
+
 
 exports.newProducts = async (req, res) => {
   await Product.find().limit(6).sort({ createdAt: -1 })
@@ -87,7 +98,7 @@ exports.newProducts = async (req, res) => {
 };
 
 exports.featuredProducts = async (req, res) => {
-  await Product.find({ featured: 1 }).populate("category","name").sort({ createdAt: -1 })
+  await Product.find({ featured: 1 }).populate("category", "name").sort({ createdAt: -1 })
     .exec((error, product) => {
       if (error) return res.status(400).json({ error });
       if (product) {
