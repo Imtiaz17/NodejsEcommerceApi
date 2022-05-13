@@ -39,6 +39,7 @@ module.exports = {
         }
       });
   },
+  
   async deleteBrandById(req, res) {
     const brandId = req.params.id;
     if (!brandId) {
