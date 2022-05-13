@@ -3,5 +3,5 @@ const router = express.Router();
 const {requireSignin} = require ('../middleware/auth')
 const {addItemToCart}= require ('../controller/cart')
 
-router.post('/addtocart',requireSignin,addItemToCart);
+router.post('/addtocart',addItemToCart);
 module.exports=router

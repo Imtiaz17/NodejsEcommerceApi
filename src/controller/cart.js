@@ -1,6 +1,6 @@
 const Cart = require("../models/cart");
 exports.addItemToCart = (req, res) => {
-  Cart.findOne({ user: req.user._id }).exec((error, cart) => {
+  Cart.findOne({_id: req.body.cart_id }).exec((error, cart) => {
     if (error) return res.status(400).json({ error });
     if (cart) {
       //if cart exist update the cart
@@ -9,7 +9,7 @@ exports.addItemToCart = (req, res) => {
       let condition, update;
       if (item) {
         //if product in cart exist update the quantity
-        condition = { user: req.user._id, "cartItems.product": product };
+        condition = {"cartItems.product": product };
         update = {
           $set: {
             "cartItems.$": {
@@ -20,7 +20,7 @@ exports.addItemToCart = (req, res) => {
           },
         };
       } else {
-        condition = { user: req.user._id };
+        condition = { };
         update = {
           $push: {
             cartItems: req.body.cartItems
@@ -41,7 +41,6 @@ exports.addItemToCart = (req, res) => {
     } else {
       //if no cart exist for user create a cart
       const cart = new Cart({
-        user: req.user._id,
         cartItems: req.body.cartItems,
         total_price: req.body.cartItems.price * req.body.cartItems.quantity
       });
