@@ -87,7 +87,7 @@ exports.getCategoryWiseProduct = (req, res) => {
   Category.findOne({ slug: slug }).exec((error, result) => {
     if (error) return res.status(400).json({ error });
     if (result) {
-        Product.find({ category: { $ne: result._id } }).populate("category", "name").sort({ createdAt: -1 }).exec((error, product) => {
+        Product.find({ category:  result._id }).populate("category", "name").sort({ createdAt: -1 }).exec((error, product) => {
         if (error) return res.status(400).json({ error });
         if (product) {
           return res.status(200).json({ product });
