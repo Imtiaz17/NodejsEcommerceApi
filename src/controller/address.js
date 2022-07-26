@@ -1,14 +1,15 @@
+const address = require("../models/address");
 const UserAddress = require("../models/address");
 
 exports.addAddress = (req, res) => {
-  const { userAddress } = req.body;
-  if ( typeof userAddress !== "undefined") {
-    if (userAddress._id) {
+  const { address } = req.body;
+  if (address) {
+    if (address.address._id) {
       UserAddress.findOneAndUpdate(
-        { user: req.user._id, "address._id": userAddress._id },
+        { user: req.user._id, "address._id": payload.address._id },
         {
           $set: {
-            "address.$": userAddress,
+            "address.$": payload.address,
           },
         }
       ).exec((error, address) => {
@@ -22,7 +23,7 @@ exports.addAddress = (req, res) => {
         { user: req.user._id },
         {
           $push: {
-            address: userAddress,
+            address: address,
           },
         },
         { new: true, upsert: true }

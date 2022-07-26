@@ -13,12 +13,7 @@ const addressSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  pinCode: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  locality: {
+  country: {
     type: String,
     required: true,
     trim: true,
@@ -41,10 +36,10 @@ const addressSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  landmark: {
+  zipcode: {
     type: String,
-    min: 10,
-    max: 100,
+    required: true,
+    trim: true,
   },
   alternatePhone: {
     type: String,
@@ -52,7 +47,7 @@ const addressSchema = new mongoose.Schema({
   addressType: {
     type: String,
     required: true,
-    enum: ["home", "work"],
+    enum: ["shipping", "billing","both"],
     required: true,
   },
 });

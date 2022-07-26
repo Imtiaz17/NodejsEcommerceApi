@@ -69,11 +69,11 @@ exports.addItemToCart = (req, res) => {
 };
 
 exports.deleteCartItem = (req, res) => {
-  const { product, quantity, price } = req.body;
+  const { productId, quantity, price } = req.body;
   Cart.findOne({ _id: req.body.cart_id }).exec((error, cart) => {
     if (error) return res.status(400).json({ error });
     if (cart) {
-      let itemIndex = cart.cartItems.findIndex(p => p.product == product);
+      let itemIndex = cart.cartItems.findIndex(p => p.product == productId);
       if (itemIndex > -1) {
         cart.cartItems.splice(itemIndex, 1);
         const newcart = cart.save((error, updatedcart) => {
@@ -102,7 +102,7 @@ exports.getCart = (req, res) => {
         let cartItems = [];
         cart.cartItems.forEach((item, index) => {
           cartItems.push({
-            product: item.product._id.toString(),
+            productId: item.product._id.toString(),
             name: item.product.name,
             img: item.product.productPic[0].img,
             price: item.product.price,
