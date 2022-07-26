@@ -2,7 +2,7 @@ const Order = require("../models/order");
 const Cart = require("../models/cart");
 
 exports.addOrder = (req, res) => {
-  Cart.deleteOne({ user: req.user._id }).exec((error, result) => {
+  Cart.deleteOne({ _id: req.body.cartId }).exec((error, result) => {
     if (error) return res.status(400).json({ error });
     if (result) {
       req.body.user = req.user._id;
